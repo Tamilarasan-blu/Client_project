@@ -48,7 +48,6 @@ const navItems = [
   { path: '/setup', label: 'Setup', icon: '⚙️' },
 ]
 
-// Styles as plain objects — no template literals, no conditional class bugs
 const styles = {
   aside: {
     background: '#1c2333',
@@ -150,7 +149,7 @@ const styles = {
   },
 }
 
-function NavItem({ item }) {
+function NavItem({ item, onNavClick }) {
   const location = useLocation()
   const hasChildren = Boolean(item.children && item.children.length > 0)
   const isChildActive = hasChildren ? item.children.some(c => location.pathname === c.path || location.pathname.startsWith(c.path + '/')) : false
@@ -175,19 +174,17 @@ function NavItem({ item }) {
         </button>
         {open && (
           <ul style={{ ...styles.subList, margin: 0, padding: 0 }}>
-            {item.children.map(child => {
-              const childActive = location.pathname === child.path || location.pathname.startsWith(child.path + '/')
-              return (
-                <li key={child.path} style={{ listStyle: 'none' }}>
-                  <NavLink
-                    to={child.path}
-                    style={({ isActive }) => styles.childItem(isActive)}
-                  >
-                    {child.label}
-                  </NavLink>
-                </li>
-              )
-            })}
+            {item.children.map(child => (
+              <li key={child.path} style={{ listStyle: 'none' }}>
+                <NavLink
+                  to={child.path}
+                  style={({ isActive }) => styles.childItem(isActive)}
+                  onClick={onNavClick}
+                >
+                  {child.label}
+                </NavLink>
+              </li>
+            ))}
           </ul>
         )}
       </li>
@@ -204,6 +201,7 @@ function NavItem({ item }) {
         })}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
+        onClick={onNavClick}
       >
         <span style={styles.icon}>{item.icon}</span>
         <span>{item.label}</span>
@@ -212,18 +210,29 @@ function NavItem({ item }) {
   )
 }
 
-export default function Sidebar() {
+export default function Sidebar({ isOpen, onClose }) {
   const { currentUser } = useApp()
+
   return (
-    <aside style={styles.aside}>
-      {/* Logo */}
+    <aside className={`sidebar${isOpen ? ' sidebar-open' : ''}`} style={styles.aside}>
+      {/* Logo + close button row */}
       <div style={styles.logoArea}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <div style={{ width: '36px', height: '36px', borderRadius: '8px', background: '#3b5bdb', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontWeight: 700, fontSize: '13px', flexShrink: 0 }}>LW</div>
-          <div style={{ minWidth: 0 }}>
-            <div style={{ color: '#fff', fontSize: '14px', fontWeight: 600, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>Bluverse CRM</div>
-            <div style={{ color: '#6b7280', fontSize: '11px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{currentUser.email}</div>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', minWidth: 0 }}>
+            <div style={{ width: '36px', height: '36px', borderRadius: '8px', background: '#3b5bdb', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontWeight: 700, fontSize: '13px', flexShrink: 0 }}>LW</div>
+            <div style={{ minWidth: 0 }}>
+              <div style={{ color: '#fff', fontSize: '14px', fontWeight: 600, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>Bluverse CRM</div>
+              <div style={{ color: '#6b7280', fontSize: '11px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{currentUser.email}</div>
+            </div>
           </div>
+          {/* Close button — only visible on mobile/tablet via CSS */}
+          <button
+            onClick={onClose}
+            className="sidebar-close-btn"
+            style={{ background: 'rgba(255,255,255,0.08)', border: 'none', color: '#9ca3af', borderRadius: '6px', width: '28px', height: '28px', display: 'none', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', fontSize: '16px', flexShrink: 0 }}
+          >
+            ✕
+          </button>
         </div>
       </div>
 
@@ -242,7 +251,7 @@ export default function Sidebar() {
       <nav style={styles.navArea}>
         <ul style={{ margin: 0, padding: 0 }}>
           {navItems.map((item, idx) => (
-            <NavItem key={item.path || (item.label + idx)} item={item} />
+            <NavItem key={item.path || (item.label + idx)} item={item} onNavClick={onClose} />
           ))}
         </ul>
       </nav>

@@ -24,25 +24,25 @@ export default function Dashboard() {
       />
 
       {/* KPI Cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+      <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 mb-6">
         {[
           { label: 'Invoices Awaiting Payment', value: '0 / 84', icon: '📄', color: 'bg-blue-50 text-blue-700', link: '/sales/invoices' },
           { label: 'Converted Leads', value: '180 / 2720', icon: '🎯', color: 'bg-green-50 text-green-700', link: '/leads' },
           { label: 'Projects In Progress', value: '0 / 0', icon: '📁', color: 'bg-purple-50 text-purple-700', link: '/projects' },
           { label: 'Tasks Not Finished', value: '0 / 0', icon: '✅', color: 'bg-orange-50 text-orange-700', link: '/tasks' },
         ].map((kpi, i) => (
-          <Link key={i} to={kpi.link} className="stat-card flex items-start gap-4 no-underline hover:shadow-md transition-shadow">
-            <div className={`w-10 h-10 rounded-lg flex items-center justify-center text-xl ${kpi.color}`}>{kpi.icon}</div>
-            <div>
-              <div className="text-xl font-bold text-gray-800">{kpi.value}</div>
-              <div className="text-xs text-gray-500 mt-0.5">{kpi.label}</div>
+          <Link key={i} to={kpi.link} className="stat-card flex items-start gap-3 no-underline hover:shadow-md transition-shadow">
+            <div className={`w-9 h-9 md:w-10 md:h-10 rounded-lg flex items-center justify-center text-lg md:text-xl flex-shrink-0 ${kpi.color}`}>{kpi.icon}</div>
+            <div className="min-w-0">
+              <div className="text-lg md:text-xl font-bold text-gray-800">{kpi.value}</div>
+              <div className="text-xs text-gray-500 mt-0.5 leading-tight">{kpi.label}</div>
             </div>
           </Link>
         ))}
       </div>
 
       {/* Invoice & Estimate Overview */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4 mb-6">
         <div className="stat-card">
           <h3 className="font-semibold text-gray-700 mb-4 flex items-center gap-2">📄 Invoice Overview</h3>
           {[
@@ -94,7 +94,7 @@ export default function Dashboard() {
       </div>
 
       {/* Revenue Chart & Lead Stats */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 md:gap-4 mb-6">
         <div className="lg:col-span-2 stat-card">
           <div className="flex justify-between items-center mb-4">
             <h3 className="font-semibold text-gray-700">Revenue Overview</h3>
@@ -138,7 +138,7 @@ export default function Dashboard() {
 
       {/* Tabs: Tasks, Projects, Reminders, Tickets, Announcements */}
       <div className="stat-card mb-6">
-        <div className="flex items-center gap-1 border-b border-gray-100 mb-4">
+        <div className="flex items-center gap-1 border-b border-gray-100 mb-4 overflow-x-auto" style={{ WebkitOverflowScrolling: 'touch' }}>
           {[
             { id: 'tasks', label: 'My Tasks' },
             { id: 'projects', label: 'My Projects' },
@@ -199,7 +199,7 @@ export default function Dashboard() {
       </div>
 
       {/* Contracts Expiring & Staff Tickets */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 md:gap-4">
         <div className="stat-card">
           <h3 className="font-semibold text-gray-700 mb-3">Contracts Expiring Soon</h3>
           <p className="text-sm text-gray-400 italic">No contracts expiring in the next 7 days.</p>

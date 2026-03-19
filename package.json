@@ -1,5 +1,5 @@
 {
- "homepage": "https://github.com/Tamilarasan-blu/Client_project.git",
+  "homepage": "https://github.com/Tamilarasan-blu/Client_project.git",
   "name": "bluverse-crm",
   "private": true,
   "version": "1.0.0",
@@ -7,7 +7,9 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "date-fns": "^4.1.0",
